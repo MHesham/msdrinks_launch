@@ -1,19 +1,15 @@
 <launch>
+	<include file="$(find msdrinks_launch)/launch/freenect_rgb_only.launch">
+		<arg name="camera" value="station_camera" />
+	</include>
 	<include file="$(find apriltags2_ros)/launch/continuous_detection.launch">
-		<arg name="camera_name" value="camera" />
+		<arg name="camera_name" value="station_camera" />
 		<arg name="image_topic" value="rgb/image_raw" />
 	</include>
-	<node name="object_detector" pkg="object_detector" type="object_detector.py" respawn="true" />
-	<node name="msdrinks_planner" pkg="msdrinks_planner" type="msdrinks_planner.py" respawn="true" />
-	<node name="msdrinks_planner_cli" pkg="msdrinks_planner" type="msdrinks_planner_cli.py" respawn="true" />
+	<node name="msdrinks_planner_cli" pkg="msdrinks_planner" type="msdrinks_planner_cli.py" respawn="true" output="screen" />
 	<group ns="tags">
 		<node name="image_view" pkg="image_view" type="image_view" respawn="true">
 			<remap from="image" to="/tag_detections_image" />
-		</node>
-	</group>
-	<group ns="od">
-		<node name="image_view" pkg="image_view" type="image_view" respawn="true">
-			<remap from="image" to="/detected_objects/overlay_img" />
 		</node>
 	</group>
 </launch>
